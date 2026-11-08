@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atelier Nota – Create your own perfume</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEE9F3;--sf:#F8F5FB;--ink:#2B1733;--mut:#6B5C75;--ln:#D3C9DC;--ac:#2B1733;--ac-t:#F8F5FB;
+--floral:#D8648B;--citrus:#E5B422;--woody:#7B5535;--spicy:#C4412B;--musky:#8E80AE;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A0F20;--sf:#26172E;--ink:#F1EAF5;--mut:#B3A4BD;--ln:#43304D;--ac:#F1EAF5;--ac-t:#1A0F20}}
+:root[data-theme="dark"]{--bg:#1A0F20;--sf:#26172E;--ink:#F1EAF5;--mut:#B3A4BD;--ln:#43304D;--ac:#F1EAF5;--ac-t:#1A0F20}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'DM Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bodoni Moda',Georgia,serif;font-weight:500;margin:0;line-height:1.1}
+h1{font-size:clamp(2.2rem,6vw,4rem)}h2{font-size:1.6rem;margin-bottom:.6rem}h3{font-size:1.15rem}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+header.hero{padding:44px 0 24px;max-width:640px}
+header.hero p{color:var(--mut);margin:14px 0 0;max-width:52ch}
+.lab{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(max-width:820px){.lab{grid-template-columns:1fr}}
+.panel{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:20px}
+.fam{margin-bottom:16px}
+.fam h3{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--ln);background:transparent;border-radius:999px;padding:6px 14px;font-size:.92rem;position:relative}
+.chip[data-w="1"],.chip[data-w="2"],.chip[data-w="3"]{color:#fff;border-color:transparent}
+.chip small{margin-left:6px;opacity:.9}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.btn{border:1px solid var(--ink);background:transparent;border-radius:8px;padding:9px 16px;font-weight:500}
+.btn.pri{background:var(--ac);color:var(--ac-t)}
+.hint{color:var(--mut);font-size:.9rem}
+.flask{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.flask svg{flex:0 0 auto}
+.pyr p{margin:.25rem 0;font-size:.95rem}.pyr b{display:inline-block;width:56px;font-weight:700}
+.match{margin:10px 0}.match .bar{height:8px;border-radius:4px;background:var(--ln);overflow:hidden;margin-top:4px}
+.match .bar i{display:block;height:100%;background:var(--ink)}
+.match span{display:flex;justify-content:space-between;font-size:.95rem}
+.sug{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px}
+.sug button{text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:14px}
+.sug button b{font-family:'Bodoni Moda',Georgia,serif;font-size:1.05rem;display:block}
+.sug button span{color:var(--mut);font-size:.88rem}
+section{margin:36px 0}
+input,textarea{font:inherit;width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--ink)}
+.stars button{background:none;border:0;font-size:1.6rem;padding:0 2px;color:var(--ln)}
+.stars button.on{color:var(--citrus)}
+.rev{border-top:1px solid var(--ln);padding:12px 0}.rev:first-child{border-top:0}
+.tbar{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+.brand{font-family:'Bodoni Moda',Georgia,serif;font-size:1.2rem}
+.aiin{display:flex;gap:8px}.aiin .btn{flex:0 0 auto;white-space:nowrap}#aiout b{font-family:'Bodoni Moda',Georgia,serif;font-size:1.1rem;color:var(--ink)}#aiout{margin:12px 0 0;min-height:1.4em}.btn:disabled{opacity:.5;cursor:wait}
+footer{color:var(--mut);font-size:.85rem;padding:20px 0 40px}
+</style></head>
+<body><div class="wrap">
+<div class="tbar"><span class="brand">Atelier Nota</span><button class="btn" id="theme" aria-label="Toggle dark mode">Light / dark</button></div>
+<header class="hero"><h1>Design a perfume that is only yours.</h1>
+<p>Pick notes from five scent families. We show how your blend is built, which famous fragrances it is closest to, and suggest what to add next.</p></header>
+
+<div class="lab">
+<div class="panel" id="notes"><h2>1. Choose your notes</h2><p class="hint">Tap a note to add it. Tap again for a stronger dose (up to 3), then once more to remove it.</p><div id="fams"></div>
+<div class="row"><button class="btn" id="clear">Clear blend</button><button class="btn" id="surprise">Surprise me</button></div></div>
+
+<div class="panel" id="result"><h2>2. Your blend</h2>
+<div class="flask"><svg id="bottle" width="150" height="210" viewBox="0 0 150 210" role="img" aria-label="Bottle filled with your blend"></svg>
+<div style="flex:1;min-width:200px"><h3 id="pname">Empty bottle</h3><div class="pyr" id="pyr"><p class="hint">Add notes to see top, heart and base.</p></div></div></div>
+<h3 style="margin-top:18px">Scent profile</h3><svg id="radar" viewBox="0 0 300 270" style="width:100%;max-width:340px;display:block;margin:0 auto" role="img" aria-label="Scent profile radar chart"></svg>
+<h3>Closest fragrances</h3><div id="matches"><p class="hint">Matches appear once your blend has a few notes.</p></div></div>
+</div>
+
+<section id="ai" style="display:none"><h2>Describe a scent, we compose it</h2><div class="panel"><p class="hint" style="margin:0 0 10px">Try “fresh but romantic”, “a cosy library on a rainy day” or “a summer wedding”. The notes load into your blend above.</p><div class="aiin"><input id="aiq" maxlength="120" placeholder="Describe the mood or occasion" aria-label="Describe the scent you want"><button class="btn pri" id="aigo">Compose blend</button></div><p id="aiout" class="hint" aria-live="polite"></p></div></section>
+<section><h2>Suggested combinations</h2><p class="hint">Start from a mood, or let the suggestion below complete your blend.</p>
+<div class="panel" id="complete" style="margin:10px 0"><p class="hint" style="margin:0">Add a note to get a completion suggestion.</p></div>
+<div class="sug" id="presets"></div></section>
+
+<section><h2>Customer reviews</h2>
+<div class="lab"><div class="panel"><h3>Review your blend</h3>
+<p class="hint">Reviews are saved in this browser.</p>
+<div class="stars" id="stars" role="radiogroup" aria-label="Rating"></div>
+<p><input id="rname" placeholder="Your name" aria-label="Your name"></p>
+<p><textarea id="rtext" rows="3" placeholder="How does this blend smell on skin?" aria-label="Review"></textarea></p>
+<button class="btn pri" id="rsub">Post review</button></div>
+<div class="panel" id="revs"><h3>Recent reviews</h3><div id="revlist"></div></div></div></section>
+<footer>Fragrance matches compare your note balance with approximate style profiles of well-known perfumes. They are guides, not formulas.</footer>
+</div>
+<script>
+const F=[['floral','Floral',[['Rose','h'],['Jasmine','h'],['Peony','t'],['Ylang-ylang','h'],['Lavender','h'],['Iris','h']]],
+['citrus','Citrus',[['Bergamot','t'],['Lemon','t'],['Grapefruit','t'],['Orange','t'],['Yuzu','t']]],
+['woody','Woody',[['Sandalwood','b'],['Cedar','b'],['Vetiver','b'],['Oud','b'],['Patchouli','b']]],
+['spicy','Spicy',[['Black pepper','t'],['Cardamom','t'],['Cinnamon','h'],['Saffron','h'],['Ginger','t']]],
+['musky','Musky',[['White musk','b'],['Amber','b'],['Vanilla','b'],['Tonka bean','b'],['Ambroxan','b']]]];
+const COL={floral:'#D8648B',citrus:'#E5B422',woody:'#7B5535',spicy:'#C4412B',musky:'#8E80AE'};
+const K=F.map(f=>f[0]);
+const REF=[['Chanel No. 5',[9,3,3,2,6],'Classic powdery floral'],['Dior Sauvage',[1,7,5,7,3],'Fresh peppery woods'],['Acqua di Giò',[3,9,4,1,3],'Marine citrus'],['Tom Ford Oud Wood',[1,0,10,6,5],'Smoky oud and spice'],['YSL Black Opium',[4,1,2,5,9],'Sweet vanilla gourmand'],['Light Blue',[3,10,2,0,3],'Bright lemon and apple'],['Creed Aventus',[1,8,6,3,4],'Fruity smoky woods'],['Flowerbomb',[9,1,0,3,8],'Explosive floral musk']];
+const PRE=[['Morning Garden',['Bergamot','Peony','Rose','White musk'],'Fresh, dewy, light'],['Midnight Amber',['Cardamom','Saffron','Oud','Amber','Vanilla'],'Warm, deep, evening'],['Citrus Grove',['Lemon','Grapefruit','Yuzu','Cedar'],'Zesty and clean'],['Velvet Rose',['Rose','Jasmine','Cinnamon','Patchouli','Tonka bean'],'Romantic and rich'],['Forest Walk',['Ginger','Lavender','Vetiver','Cedar','Ambroxan'],'Green, calm, earthy'],['Spice Market',['Black pepper','Cinnamon','Saffron','Sandalwood','Vanilla'],'Bold and golden']];
+const NT={};F.forEach(f=>f[2].forEach(n=>NT[n[0]]={f:f[0],l:n[1]}));
+let sel={};
+const $=id=>document.getElementById(id);
+const LN={t:'Top',h:'Heart',b:'Base'};
+function build(){$('fams').innerHTML=F.map(f=>`<div class="fam"><h3><span class="dot" style="background:${COL[f[0]]}"></span>${f[1]}</h3><div class="chips">${f[2].map(n=>`<button class="chip" data-n="${n[0]}" aria-pressed="false">${n[0]}</button>`).join('')}</div></div>`).join('');
+$('presets').innerHTML=PRE.map((p,i)=>`<button data-p="${i}"><b>${p[0]}</b><span>${p[2]}: ${p[1].join(', ')}</span></button>`).join('')}
+function prof(){const v=[0,0,0,0,0];for(const n in sel){v[K.indexOf(NT[n].f)]+=sel[n]}const m=Math.max(...v,1);const tot=Object.values(sel).reduce((a,b)=>a+b,0);
+return{raw:v,tot,scaled:v.map(x=>tot?Math.min(10,x/Math.max(m,4)*10):0)}}
+function cos(a,b){let d=0,x=0,y=0;a.forEach((v,i)=>{d+=v*b[i];x+=v*v;y+=b[i]*b[i]});return x&&y?d/Math.sqrt(x*y):0}
+function name(){const p=prof().raw;const o=K.map((k,i)=>[k,p[i]]).sort((a,b)=>b[1]-a[1]);if(!o[0][1])return'Empty bottle';
+const A={floral:['Bloom','Petal'],citrus:['Sun','Zest'],woody:['Grove','Ember'],spicy:['Spice','Flame'],musky:['Velvet','Skin']};
+const a=A[o[0][0]][0],b=o[1][1]?A[o[1][0]][1]:'Nota';return a+' & '+b}
+function render(){
+document.querySelectorAll('.chip').forEach(c=>{const w=sel[c.dataset.n]||0;const col=COL[NT[c.dataset.n].f];c.dataset.w=w;c.style.background=w?col:'transparent';c.style.opacity=w?(0.6+w*0.14):1;c.setAttribute('aria-pressed',w>0);c.innerHTML=c.dataset.n+(w?`<small>${'●'.repeat(w)}</small>`:'')});
+const P=prof();$('pname').textContent=name();
+// bottle
+let y=170,h=0,s='';const H=P.tot?125:0;
+K.forEach((k,i)=>{if(P.raw[i]){h=P.raw[i]/P.tot*H;y-=h;s+=`<rect x="31" y="${y}" width="88" height="${h}" fill="${COL[k]}"/>`}});
+$('bottle').innerHTML=`<defs><clipPath id="cp"><rect x="30" y="45" width="90" height="125" rx="14"/></clipPath></defs><rect x="58" y="6" width="34" height="26" rx="4" fill="var(--ink)"/><rect x="66" y="30" width="18" height="16" fill="var(--mut)"/><g clip-path="url(#cp)">${s}</g><rect x="30" y="45" width="90" height="125" rx="14" fill="none" stroke="var(--ink)" stroke-width="2.5"/><text x="75" y="195" text-anchor="middle" font-size="11" fill="var(--mut)" font-family="DM Sans,sans-serif">${P.tot?Object.keys(sel).length+' notes':'no notes yet'}</text>`;
+// pyramid
+const L={t:[],h:[],b:[]};for(const n in sel)L[NT[n].l].push(n);
+$('pyr').innerHTML=P.tot?['t','h','b'].map(l=>`<p><b>${LN[l]}</b>${L[l].join(', ')||'<span class="hint">none yet</span>'}</p>`).join(''):'<p class="hint">Add notes to see top, heart and base.</p>';
+// radar
+const cx=150,cy=135,R=95;let g='';[.33,.66,1].forEach(r=>{g+=`<polygon points="${K.map((_,i)=>pt(i,R*r).join(',')).join(' ')}" fill="none" stroke="var(--ln)"/>`});
+K.forEach((k,i)=>{const[ex,ey]=pt(i,R);const[tx,ty]=pt(i,R+22);g+=`<line x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}" stroke="var(--ln)"/><text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="var(--ink)" font-family="DM Sans,sans-serif">${F[i][1]}</text><circle cx="${pt(i,R*P.scaled[i]/10)[0]}" cy="${pt(i,R*P.scaled[i]/10)[1]}" r="4" fill="${COL[k]}"/>`});
+if(P.tot)g+=`<polygon points="${P.scaled.map((v,i)=>pt(i,R*v/10).join(',')).join(' ')}" fill="var(--musky)" fill-opacity=".3" stroke="var(--ink)" stroke-width="1.5"/>`;
+$('radar').innerHTML=g;
+function pt(i,r){const a=-Math.PI/2+i*2*Math.PI/5;return[+(cx+r*Math.cos(a)).toFixed(1),+(cy+r*Math.sin(a)).toFixed(1)]}
+// matches
+if(P.tot>=2){const m=REF.map(r=>[r,cos(P.raw,r[1])]).sort((a,b)=>b[1]-a[1]).slice(0,3);
+$('matches').innerHTML=m.map(([r,c])=>`<div class="match"><span><b>${r[0]}</b><b>${Math.round(c*100)}%</b></span><span class="hint">${r[2]}</span><div class="bar"><i style="width:${c*100}%"></i></div></div>`).join('')}
+else $('matches').innerHTML='<p class="hint">Matches appear once your blend has a few notes.</p>';
+// completion suggestion
+const c=$('complete');
+if(!P.tot){c.innerHTML='<p class="hint" style="margin:0">Add a note to get a completion suggestion.</p>'}
+else{const miss=['t','h','b'].filter(l=>!L[l].length);const low=K.map((k,i)=>[k,P.raw[i]]).sort((a,b)=>a[1]-b[1]);
+let pick=null;const lay=miss[0];
+const pool=Object.keys(NT).filter(n=>!sel[n]&&(!lay||NT[n].l===lay));
+const bal=pool.sort((a,b)=>low.findIndex(x=>x[0]===NT[a].f)-low.findIndex(x=>x[0]===NT[b].f));pick=bal[0];
+c.innerHTML=pick?`<p style="margin:0"><b>Try adding ${pick}.</b> ${lay?`Your blend has no ${LN[lay].toLowerCase()} note yet, and`:'It'} brings more ${NT[pick].f} character to balance your profile. <button class="btn" data-add="${pick}" style="margin-left:6px">Add ${pick}</button></p>`:'<p style="margin:0">Your blend covers every layer. Adjust doses to fine-tune it.</p>'}}
+document.addEventListener('click',e=>{
+const ch=e.target.closest('.chip');if(ch){const n=ch.dataset.n;sel[n]=((sel[n]||0)+1)%4;if(!sel[n])delete sel[n];render();return}
+const a=e.target.closest('[data-add]');if(a){sel[a.dataset.add]=1;render();return}
+const p=e.target.closest('[data-p]');if(p){sel={};PRE[p.dataset.p][1].forEach(n=>sel[n]=1+(NT[n].l==='b'?0:0));render();$('result').scrollIntoView({behavior:'smooth',block:'start'})}});
+$('clear').onclick=()=>{sel={};render()};
+$('surprise').onclick=()=>{sel={};const pick=(l)=>{const a=Object.keys(NT).filter(n=>NT[n].l===l&&!sel[n]);return a[Math.floor(Math.random()*a.length)]};
+[pick('t'),pick('t'),pick('h'),pick('h'),pick('b'),pick('b')].forEach(n=>{if(n)sel[n]=1+Math.floor(Math.random()*2)});render()};
+$('theme').onclick=()=>{const r=document.documentElement;const d=getComputedStyle(r).getPropertyValue('--bg').trim()==='#1A0F20';r.dataset.theme=d?'light':'dark'};
+// reviews
+let shared=[],DB=null,SAMPLE=null,rate=0,revs=[{n:'Amira',r:5,t:'Citrus and white musk is now my daily scent. Light but it lasts.',b:'Citrus Grove'},{n:'Jon',r:4,t:'Oud with a little vanilla came out close to what I was hunting for.',b:'Midnight Amber'}];
+try{const s=localStorage.getItem('nota-revs');if(s)revs=JSON.parse(s)}catch(e){}
+function stars(){$('stars').innerHTML=[1,2,3,4,5].map(i=>`<button class="${i<=rate?'on':''}" data-s="${i}" role="radio" aria-checked="${i===rate}" aria-label="${i} stars">★</button>`).join('')}
+$('stars').onclick=e=>{const b=e.target.closest('[data-s]');if(b){rate=+b.dataset.s;stars()}};
+function revr(){const L=shared.length?shared:revs;$('revlist').innerHTML=L.map(r=>`<div class="rev"><b>${esc(r.n)}</b> <span style="color:var(--citrus)">${'★'.repeat(r.r)}</span><span class="hint"> ${esc(r.b)}</span><p style="margin:.2rem 0 0">${esc(r.t)}</p></div>`).join('')}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+$('rsub').onclick=()=>{const t=$('rtext').value.trim();if(!rate||!t){alert('Choose a star rating and write a short review.');return}
+const rv={n:$('rname').value.trim()||'Guest',r:rate,t,b:name()};revs.unshift(rv);if(DB)DB.collection('reviews').add({...rv,at:Date.now()}).catch(()=>{if(shared.length){shared.unshift(rv);revr()}});try{localStorage.setItem('nota-revs',JSON.stringify(revs.slice(0,30)))}catch(e){}
+$('rtext').value='';rate=0;stars();revr()};
+$('aiq').addEventListener('keydown',e=>{if(e.key==='Enter')$('aigo').click()});
+$('aigo').onclick=async()=>{const q=$('aiq').value.trim(),out=$('aiout');if(!q||!SAMPLE){out.textContent='Type a mood or occasion first.';return}
+$('aigo').disabled=true;out.textContent='Composing your blend…';
+try{const j=await SAMPLE.json(`You are a master perfumer. Use ONLY these notes, spelled exactly: ${Object.keys(NT).join(', ')}.\nCompose a blend for this request: "${q.replace(/"/g,'')}".\nChoose 4 to 7 notes covering top, heart and base, from at least 3 families. Give each a dose d of 1, 2 or 3.\nReturn JSON only: {"name":"short evocative name","notes":[{"n":"Bergamot","d":2}],"why":"two plain sentences on how it smells and why the notes work together"}`);
+const ok=((j&&j.notes)||[]).filter(x=>NT[x.n]);if(ok.length<3)throw {code:'bad'};
+sel={};ok.forEach(x=>sel[x.n]=Math.min(3,Math.max(1,x.d|0||1)));render();
+if(j.name)$('pname').textContent=String(j.name).slice(0,40);
+out.innerHTML=`<b>${esc(j.name||'Your blend')}</b><br>${esc(j.why||'')}`;$('result').scrollIntoView({behavior:'smooth',block:'start'})}
+catch(e){out.textContent=e&&e.code==='not_granted'?'AI composing needs your permission to run. Allow it and try again.':e&&e.code==='rate_limited'?'Too many requests. Wait a moment and try again.':'Could not compose a blend. Try describing the mood in different words.'}
+finally{$('aigo').disabled=false}};
+(async()=>{try{if(!window.claude)return;SAMPLE=await claude.use('sample');if(SAMPLE)$('ai').style.display=''}catch(e){}
+try{DB=window.claude?await claude.use('db'):null;if(DB)DB.collection('reviews').orderBy('at','desc').limit(30).onSnapshot(s=>{shared=s.docs.map(d=>d.data());revr()},()=>{})}catch(e){}})();
+build();render();stars();revr();
+</script></body></html>
